@@ -78,16 +78,15 @@
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn">
+                    <form action="/changed-person" method="POST">
+                        <input type="number" class="form-control mb-2" name="changedInputId" id="changedInputId" placeholder="Id på person der vil ædres">
+                        <input type="text" class="form-control mb-2" name="changedInputNavn" id="changedInputNavn" placeholder="Navn skal ædres til">
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Ændre' />
                     </form>
                 </div>
                 <div class="col-sm">
                     <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn">
+                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id på den task der vil slettes">
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Slet' />
                     </form>
                 </div>

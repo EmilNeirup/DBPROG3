@@ -83,23 +83,26 @@ app.post('/created-person', function (req, res) {
     });
 });
 
-app.post('/created', function (req) {
+app.post('/changed-person', function (req) {
     
-    let creatPersonId=req.body.inputId;
-    console.log(creatPersonId);
-    let creatPersonNavn=req.body.inputNavn;
-    console.log(creatPersonNavn);
+    let changedPersonId=req.body.changedInputId;
+    console.log(changedPersonId);
+    let changedPersonNavn=req.body.changedInputNavn;
+    console.log(changedPersonNavn);
 
     sql.connect(config, function(err) {
         if (err) console.log(err);
 
         let sqlRequest = new sql.Request();
 
-        let sqlQuery="INSERT INTO Personer (id, navn) VALUES ("+ parseInt(creatPersonId) +  ", '" + creatPersonNavn + "')";
+        let sqlQuery="UPDATE Personer SET navn = ' " + changedPersonNavn + "' WHERE id = " + parseInt(changedPersonId);
         sqlRequest.query(sqlQuery,sql, function(err, data){
             if (err) console.log(err) 
 
-        
+        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
+        let h='<div class="container"> <h1>' + changedPersonNavn + ' blev ændret</h1>'
+        res.send(head+h)
+
         sql.close();
         });
     });
