@@ -103,19 +103,19 @@
             
             <div class="row">
                 <div class="col-sm">
-                    <form action="/" method="POST">
+                    <form action="/created-task" method="POST">
                         <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id" required>
                         <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn"required>
                         <label class="control-label">Task start tid</label>
                         <div class='input-group date mb-2' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" id="taskInputTimeStart" name="taskInputTimeStart" />
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <label class="control-label">Task slut tid</label>
                         <div class='input-group date mb-2' id='datetimepicker2'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" id="taskInputTimeStop" name="taskInputTimeStop" />
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -124,19 +124,19 @@
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskChangeInputId" id="taskChangeInputId" placeholder="Id" required>
-                        <input type="text" class="form-control mb-2" name="taskChangeInputNavn" id="taskChangeInputNavn" placeholder="Navn" required>
+                    <form action="/changed-task" method="POST">
+                        <input type="number" class="form-control mb-2" name="taskChangeInputId" id="taskChangeInputId" placeholder="Id på tasks der skal ændres" required>
+                        <input type="text" class="form-control mb-2" name="taskChangeInputNavn" id="taskChangeInputNavn" placeholder="Navn skal ændres til" required>
                         <label class="control-label">Task start tid</label>
                         <div class='input-group date mb-2' id='datetimepicker3'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" id="changedTaskInputTimeStart" name="changedTaskInputTimeStart"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <label class="control-label">Task slut tid</label>
                         <div class='input-group date mb-2' id='datetimepicker4'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" id="changedTaskInputTimeStop" name="changedTaskInputTimeStop"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar mb-2"></span>
                             </span>
@@ -145,8 +145,8 @@
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskDeleteInputId" id="taskDeleteInputId" placeholder="Id" required>
+                    <form action="/deleted-task" method="POST">
+                        <input type="number" class="form-control mb-2" name="taskDeleteInputId" id="taskDeleteInputId" placeholder="Id på task der skal slettes" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Slet' />
                     </form>
                 </div>
@@ -165,16 +165,16 @@
 
             <div class="row">
                 <div class="col-sm">
-                      <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="inputId" id="inputId" placeholder="Id på bruger">
-                        <input type="text" class="form-control mb-2" name="inputNavn" id="inputNavn" placeholder="Id på task">
+                      <form action="/bruger-task" method="POST">
+                        <input type="number" class="form-control mb-2" name="brugerTaskInputId" id="brugerTaskInputId" placeholder="Id på bruger">
+                        <input type="text" class="form-control mb-2" name="brugerTaskInputId2" id="brugerTaskInputId2" placeholder="Id på task">
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Tilføj' />
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id på bruger">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Id på task">
+                    <form action="/delete-bruger-task" method="POST">
+                        <input type="number" class="form-control mb-2" name="deleteBrugerTaskInputId" id="deleteBrugerTaskInputId" placeholder="Id på bruger">
+                        <input type="text" class="form-control mb-2" name="deleteBrugerTaskInputId2" id="deleteBrugerTaskInputId2" placeholder="Id på task">
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Slet' />
                     </form>
                 </div>
@@ -200,7 +200,7 @@
             });
             $(function () {
                 $('#datetimepicker2').datetimepicker();
-            });
+            });$
             $(function () {
                 $('#datetimepicker3').datetimepicker();
             });

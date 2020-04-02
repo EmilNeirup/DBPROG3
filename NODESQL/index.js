@@ -148,7 +148,7 @@ app.post('/person', function (req, res) {
     });
 });
 
-app.post('/changed-person', function (req) {
+app.post('/changed-person', function (req, res) {
     
     let changedPersonId=req.body.changedInputId;
     let changedPersonNavn=req.body.changedInputNavn;
@@ -171,7 +171,7 @@ app.post('/changed-person', function (req) {
     });
 });
 
-app.post('/deleted-person', function (req) {
+app.post('/deleted-person', function (req, res) {
     
     let deletedPersonId=req.body.deletedInputId;
 
@@ -250,6 +250,110 @@ app.post('/task', function (req, res) {
     });
 });
 
+app.post('/created-task', function (req, res) {
+    sql.connect(config, function(err) {
+        let creatTaskId=req.body.taskInputId;
+        let creatTasknNavn=req.body.taskInputNavn;
+        let creatTaskInputTimeStart=req.body.taskInputTimeStart;
+        let creatTaskInputTimeStop=req.body.taskInputTimeStop;
+        if (err) console.log(err);
+
+        let sqlRequest = new sql.Request();
+
+        let sqlQuery="INSERT INTO Tasks(id, projectId, navn, timeStart, timeStop) VALUES (" + creatTaskId + ", 1, '"+ creatTasknNavn + "', '" + creatTaskInputTimeStart + "', '" + creatTaskInputTimeStop + "')";
+        sqlRequest.query(sqlQuery,sql, function(err, data){
+            if (err) console.log(err) 
+            
+            res.send(head+h)
+            sql.close();
+        });
+    });
+});
+
+app.post('/changed-task', function (req, res) {
+    sql.connect(config, function(err) {
+        let creatTaskId=req.body.taskChangeInputId;
+        let creatTasknNavn=req.body.taskChangeInputNavn;
+        let creatTaskInputTimeStart=req.body.changedTaskInputTimeStart;
+        let creatTaskInputTimeStop=req.body.changedTaskInputTimeStop;
+        if (err) console.log(err);
+
+        let sqlRequest = new sql.Request();
+
+        let sqlQuery="UPDATE Tasks SET navn = '" + creatTasknNavn + "', timeStart = '" + creatTaskInputTimeStart + "', timeStop = '" + creatTaskInputTimeStop + "' WHERE id = " + creatTaskId;
+        sqlRequest.query(sqlQuery,sql, function(err, data){
+            if (err) console.log(err) 
+            
+            res.send(head+h)
+            sql.close();
+        });
+    });
+});
+
+app.post('/deleted-task', function (req, res) {
+    
+    let deletedTaskId=req.body.taskDeleteInputId;
+
+    sql.connect(config, function(err) {
+        if (err) console.log(err);
+
+        let sqlRequest = new sql.Request();
+
+        let sqlQuery="DELETE FROM Tasks WHERE id = " + parseInt(deletedTaskId);
+        sqlRequest.query(sqlQuery,sql, function(err, data){
+            if (err) console.log(err) 
+
+        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
+        let h='<div class="container"> <h1> Task med ID' + deletedTaskId + ' blev slettet</h1>'
+        res.send(head+h)
+
+        sql.close();
+        });
+    });
+});
+
+app.post('/bruger-task', function (req, res) {
+    sql.connect(config, function(err) {
+        let brugerTaskInputId=req.body.brugerTaskInputId;
+        let brugerTaskInputId2=req.body.brugerTaskInputId2;
+        if (err) console.log(err);
+
+        let sqlRequest = new sql.Request();
+
+        let sqlQuery="INSERT INTO PersonerToTasks(personerId, tasksId) VALUES (" + brugerTaskInputId + ", " + brugerTaskInputId2 + ")"
+        sqlRequest.query(sqlQuery,sql, function(err, data){
+            if (err) console.log(err) 
+            
+            res.send(head+h)
+            sql.close();
+        });
+    });
+});
+
+app.post('/delete-bruger-task', function (req, res) {
+    
+    let deleteBrugerTaskInputId=req.body.deleteBrugerTaskInputId;
+    let deleteBrugerTaskInputId2=req.body.deleteBrugerTaskInputId2;
+    console.log(deleteBrugerTaskInputId);
+    console.log(deleteBrugerTaskInputId2);
+
+    sql.connect(config, function(err) {
+        if (err) console.log(err);
+
+        let sqlRequest = new sql.Request();
+
+        let sqlQuery="DELETE FROM PersonerToTasks WHERE personerId = " + deleteBrugerTaskInputId + " AND tasksId = " + deleteBrugerTaskInputId2 ;
+        sqlRequest.query(sqlQuery,sql, function(err, data){
+            if (err) console.log(err) 
+
+        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
+        let h='<div class="container"> <h1> Task med ID' + deleteBrugerTaskInputId + ' blev slettet</h1>'
+        res.send(head+h)
+
+        sql.close();
+        });
+    });
+});
 
 const webserver = app.listen(5000, function (){
     console.log('Node Web Server is running..');
