@@ -7,6 +7,7 @@
         <!--<link rel="stylesheet" type="text/css" href="main.css">-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="icon" type="image/png" href="/favicon.ico" />
     </head>
     <body>
         <div class="container">
@@ -19,41 +20,37 @@
 
             <div class="row">
                 <div class="col-sm">
+                    <h3>Vis bulk data</h3>
+                </div>
+                <div class="col-sm">
                     <h3>Vis bruger data</h3>
                 </div>
                 <div class="col-sm">
                     <h3>Vis task data</h3>
-                </div>
-                <div class="col-sm">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm">
                     <form action="/employees" method="POST">
-                        <select class="form-control mb-2" name="emprating" id="emprating">
-                            <option value=1>Allan</option>
-                            <option value=2>Berint</option>
-                            <option value=3>Conny</options>
-                            <option value=4>Danny</option>
-                            <option value=5>Erling</option>
-                            <option value=6>Karsten</option>
-                        </select>
+                        <input class="btn btn-primary mb-2" type="submit" id='query' value='Vis alle brugere' />
+                    </form>
+                    <form action="/tasks" method="POST">
+                        <input class="btn btn-primary mb-2" type="submit" id='query' value='Vis alle tasks' />
+                    </form>
+                </div>
+                <div class="col-sm">
+                    <form action="/employee" method="POST">
+                        <input type="number" class="form-control mb-2" name="emprating" id="emprating" placeholder="Id" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Vis data' />
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/tasks" method="POST">
-                        <select class="form-control mb-2" name="taskSelected" id="taskSelected">
-                            <option value=1>Plan</option>
-                            <option value=2>Product</option>
-                            <option value=3>Process</options>
-                            <option value=4>Delivery</option>
-                        </select>
+                    <form action="/task" method="POST">
+                        <input type="number" class="form-control mb-2" name="taskSelected" id="taskSelected" placeholder="Id" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Vis data' />
                     </form>
                 </div>
-                <div class="col-sm"></div>
             </div>
 
 
@@ -71,22 +68,22 @@
 
             <div class="row">
                 <div class="col-sm">
-                      <form action="/created-person" method="POST">
-                        <input type="number" class="form-control mb-2" name="inputId" id="inputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="inputNavn" id="inputNavn" placeholder="Navn">
+                      <form action="/person" method="POST">
+                        <input type="number" class="form-control mb-2" name="inputId" id="inputId" placeholder="Id" required>
+                        <input type="text" class="form-control mb-2" name="inputNavn" id="inputNavn" placeholder="Navn" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Opret' />
                     </form>
                 </div>
                 <div class="col-sm">
                     <form action="/changed-person" method="POST">
-                        <input type="number" class="form-control mb-2" name="changedInputId" id="changedInputId" placeholder="Id på person der vil ædres">
-                        <input type="text" class="form-control mb-2" name="changedInputNavn" id="changedInputNavn" placeholder="Navn skal ædres til">
+                        <input type="number" class="form-control mb-2" name="changedInputId" id="changedInputId" placeholder="Id på person der skal ædres" required>
+                        <input type="text" class="form-control mb-2" name="changedInputNavn" id="changedInputNavn" placeholder="Navn skal ædres til" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Ændre' />
                     </form>
                 </div>
                 <div class="col-sm">
-                    <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id på den task der vil slettes">
+                    <form action="/deleted-person" method="POST">
+                        <input type="number" class="form-control mb-2" name="deletedInputId" id="deletedInputId" placeholder="Id på den bruger der skal slettes" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Slet' />
                     </form>
                 </div>
@@ -107,8 +104,8 @@
             <div class="row">
                 <div class="col-sm">
                     <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn">
+                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id" required>
+                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn"required>
                         <label class="control-label">Task start tid</label>
                         <div class='input-group date mb-2' id='datetimepicker1'>
                             <input type='text' class="form-control" />
@@ -128,8 +125,8 @@
                 </div>
                 <div class="col-sm">
                     <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn">
+                        <input type="number" class="form-control mb-2" name="taskChangeInputId" id="taskChangeInputId" placeholder="Id" required>
+                        <input type="text" class="form-control mb-2" name="taskChangeInputNavn" id="taskChangeInputNavn" placeholder="Navn" required>
                         <label class="control-label">Task start tid</label>
                         <div class='input-group date mb-2' id='datetimepicker3'>
                             <input type='text' class="form-control" />
@@ -149,8 +146,7 @@
                 </div>
                 <div class="col-sm">
                     <form action="/" method="POST">
-                        <input type="number" class="form-control mb-2" name="taskInputId" id="taskInputId" placeholder="Id">
-                        <input type="text" class="form-control mb-2" name="taskInputNavn" id="taskInputNavn" placeholder="Navn">
+                        <input type="number" class="form-control mb-2" name="taskDeleteInputId" id="taskDeleteInputId" placeholder="Id" required>
                         <input class="btn btn-primary mb-2" type="submit" id='query' value='Slet' />
                     </form>
                 </div>

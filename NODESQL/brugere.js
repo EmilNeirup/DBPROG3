@@ -5,23 +5,9 @@ const path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', function (req, res){
-    res.sendFile(path.join(__dirname + '/index.html'));
+app.get('/brugere', function (req, res){
+    res.sendFile(path.join(__dirname + '/brugere.html'));
 });
-
-/*app.get('/brugere', function (req, res){
-    res.sendFile(path.join(__dirname + '/brugere.js'));
-});*/
-
-app.get('/employees', function (req, res){
-    res.sendFile(path.join(__dirname + '/employees.html'));
-});
-
-app.get('/', function (req, res){
-    res.sendFile(path.join(__dirname + '/test.html'));
-});
-
-
 
 
 //Tilgår driverne
@@ -37,7 +23,24 @@ const config = {
     dateStrings: true
 };
 
-/*app.post('/brugere', function (req, res) {
+let personerList = []
+
+sql.connect(config, function(err) {
+    if (err) console.log(err);
+
+    let sqlRequest = new sql.Request();
+
+    let sqlQuery='SELECT * FROM Personer'
+    sqlRequest.query(sqlQuery, function(err, data){
+        if (err) console.log(err)
+    
+    personerList = data.recordset;
+    console.log(personerList);
+    sql.close();
+    });
+});
+
+app.post('/test', function (req, res) {
     sql.connect(config, function(err) {
         if (err) console.log(err);
 
@@ -53,44 +56,15 @@ const config = {
         for (let j=0;j<data.recordset.length;j++){
             row=row + '<option value= ' + data.recordset[j].id + '>' + data.recordset[j].navn + '</option>'
         }
-        let h1 = '<h1>Brugere</h1>'
         dropDown = dropDown + row + "</select><input class='btn btn-primary mb-2' type='submit' id='query' value='Vis data' /></form>";
 
-        res.send(h1)
-        sql.close();
-        });
-    });
-});*/
-
-app.post('/employees', function (req, res) {
-    sql.connect(config, function(err) {
-        if (err) console.log(err);
-
-        let sqlRequest = new sql.Request();
-
-
-        let sqlQuery='SELECT * FROM Personer';
-        sqlRequest.query(sqlQuery, function(err, data){
-            if (err) console.log(err)
-
-        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
-        let h='<div class="container"> <h1>Alle brugere</h1>'
-        let str='<table class="table">';
-        let row='';
-        for (let j=0;j<data.recordset.length;j++){
-            row=row + '<tr>' + '<td>' + data.recordset[j].id +'</td>' + '<td>' + data.recordset[j].navn +'</td>'
-        }
-         str=str + row + '</table>';
-        let bottom ='</div>'
-        res.send(head+h+str+bottom)
-
-
+        res.send(head+dropDown)
         sql.close();
         });
     });
 });
 
-app.post('/employee', function (req, res) {
+app.post('/employees', function (req, res) {
     sql.connect(config, function(err) {
         if (err) console.log(err);
 
@@ -120,9 +94,6 @@ app.post('/employee', function (req, res) {
     });
 });
 
-
-
-
 app.post('/person', function (req, res) {
     sql.connect(config, function(err) {
         let creatPersonId=req.body.inputId;
@@ -151,7 +122,9 @@ app.post('/person', function (req, res) {
 app.post('/changed-person', function (req) {
     
     let changedPersonId=req.body.changedInputId;
+    console.log(changedPersonId);
     let changedPersonNavn=req.body.changedInputNavn;
+    console.log(changedPersonNavn);
 
     sql.connect(config, function(err) {
         if (err) console.log(err);
@@ -165,85 +138,6 @@ app.post('/changed-person', function (req) {
         let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
         let h='<div class="container"> <h1>' + changedPersonNavn + ' blev ændret</h1>'
         res.send(head+h)
-
-        sql.close();
-        });
-    });
-});
-
-app.post('/deleted-person', function (req) {
-    
-    let deletedPersonId=req.body.deletedInputId;
-
-    sql.connect(config, function(err) {
-        if (err) console.log(err);
-
-        let sqlRequest = new sql.Request();
-
-        let sqlQuery="DELETE FROM Personer WHERE id = " + parseInt(deletedPersonId);
-        sqlRequest.query(sqlQuery,sql, function(err, data){
-            if (err) console.log(err) 
-
-        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
-        let h='<div class="container"> <h1> Bruger med ID' + deletedPersonId + ' blev slettet</h1>'
-        res.send(head+h)
-
-        sql.close();
-        });
-    });
-});
-
-app.post('/tasks', function (req, res) {
-    sql.connect(config, function(err) {
-        if (err) console.log(err);
-
-        let sqlRequest = new sql.Request();
-
-
-        let sqlQuery='SELECT * FROM Tasks';
-        sqlRequest.query(sqlQuery, function(err, data){
-            if (err) console.log(err)
-
-        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
-        let h='<div class="container"> <h1>Alle tasks</h1>'
-        let str='<table class="table">';
-        let row='';
-        for (let j=0;j<data.recordset.length;j++){
-            row=row + '<tr>' + '<td>' + data.recordset[j].id +'</td>' + '<td>' + data.recordset[j].projectId +'</td>' + '<td>' + data.recordset[j].navn +'</td>' + '<td>' + data.recordset[j].timeStart +'</td>' + '<td>' + data.recordset[j].timeStop +'</td>'
-        }
-         str=str + row + '</table>';
-        let bottom ='</div>'
-        res.send(head+h+str+bottom)
-
-
-        sql.close();
-        });
-    });
-});
-
-app.post('/task', function (req, res) {
-    sql.connect(config, function(err) {
-        if (err) console.log(err);
-
-        let sqlRequest = new sql.Request();
-
-        let taskId=req.body.taskSelected;
-
-        let sqlQuery='SELECT Personer.navn AS personNavn, Personer.id, Tasks.navn AS taskNavn, Tasks.timeStart, Tasks.timeStop FROM Personer INNER JOIN PersonerToTasks ON PersonerToTasks.personerId = Personer.id INNER JOIN Tasks ON PersonerToTasks.tasksId = Tasks.id WHERE Tasks.id = ' + parseInt(taskId);
-        sqlRequest.query(sqlQuery, function(err, data){
-            if (err) console.log(err)
-
-        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
-        let h='<div class="container"> <h1>' + data.recordset[0].taskNavn + 's detaljer</h1>'
-        let str='<table class="table">';
-        let row='';
-        for (let j=0;j<data.recordset.length;j++){
-            row=row + '<tr>' + '<td>' + data.recordset[j].id +'</td>' + '<td>' + data.recordset[j].personNavn +'</td>' + '<td>' + data.recordset[j].timeStart +'</td>'+ '<td>' + data.recordset[j].timeStop +'</td>'
-        }
-         str=str + row + '</table>';
-        let bottom ='</div>'
-        res.send(head+h+str+bottom)
-
 
         sql.close();
         });
