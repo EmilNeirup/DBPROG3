@@ -37,31 +37,6 @@ const config = {
     dateStrings: true
 };
 
-/*app.post('/brugere', function (req, res) {
-    sql.connect(config, function(err) {
-        if (err) console.log(err);
-
-        let sqlRequest = new sql.Request();
-
-        let sqlQuery='SELECT * FROM Personer'
-        sqlRequest.query(sqlQuery, function(err, data){
-            if (err) console.log(err)
-        
-        let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
-        let dropDown = "<form action='/employees' method='POST'><select class='form-control mb-2' name='emprating' id='emprating'>'"
-        let row = ''
-        for (let j=0;j<data.recordset.length;j++){
-            row=row + '<option value= ' + data.recordset[j].id + '>' + data.recordset[j].navn + '</option>'
-        }
-        let h1 = '<h1>Brugere</h1>'
-        dropDown = dropDown + row + "</select><input class='btn btn-primary mb-2' type='submit' id='query' value='Vis data' /></form>";
-
-        res.send(h1)
-        sql.close();
-        });
-    });
-});*/
-
 app.post('/employees', function (req, res) {
     sql.connect(config, function(err) {
         if (err) console.log(err);
@@ -97,7 +72,6 @@ app.post('/employee', function (req, res) {
         let sqlRequest = new sql.Request();
 
         let personId=req.body.emprating;
-        console.log(personId);
 
         let sqlQuery='SELECT Tasks.id, Tasks.navn, Tasks.timeStart, Tasks.timeStop, Personer.navn AS personNavn FROM Tasks INNER JOIN PersonerToTasks ON PersonerToTasks.tasksId = Tasks.id INNER JOIN Personer ON PersonerToTasks.personerId = Personer.id WHERE Personer.id = ' + parseInt(personId);
         sqlRequest.query(sqlQuery, function(err, data){
@@ -126,21 +100,17 @@ app.post('/employee', function (req, res) {
 app.post('/person', function (req, res) {
     sql.connect(config, function(err) {
         let creatPersonId=req.body.inputId;
-        console.log(creatPersonId);
         let creatPersonNavn=req.body.inputNavn;
         console.log(creatPersonNavn);
-        if (err) console.log(err);
 
         let sqlRequest = new sql.Request();
 
         let sqlQuery="EXEC InsertPerson2 @Id = " + parseInt(creatPersonId) + ", @Name = '" + creatPersonNavn + "';";
         sqlRequest.query(sqlQuery,sql, function(err, data){
             if (err) console.log(err) 
-            console.log(data.recordset);
 
             let head=' <head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>'  
             let h='<div class="container"> <h1>' + data.recordset[0].navn + 'er oprettet med ID' + data.recordset[0].id + '</h1></div>'
-            console.log(data.recordset[0].navn + data.recordset[0].id) 
             
             res.send(head+h)
             sql.close();
@@ -334,8 +304,6 @@ app.post('/delete-bruger-task', function (req, res) {
     
     let deleteBrugerTaskInputId=req.body.deleteBrugerTaskInputId;
     let deleteBrugerTaskInputId2=req.body.deleteBrugerTaskInputId2;
-    console.log(deleteBrugerTaskInputId);
-    console.log(deleteBrugerTaskInputId2);
 
     sql.connect(config, function(err) {
         if (err) console.log(err);
