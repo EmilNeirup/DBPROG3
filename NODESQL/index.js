@@ -179,7 +179,22 @@ app.post('/tasks', function (req, res) {
         let str='<table class="table">';
         let row='';
         for (let j=0;j<data.recordset.length;j++){
-            row=row + '<tr>' + '<td>' + data.recordset[j].id +'</td>' + '<td>' + data.recordset[j].projectId +'</td>' + '<td>' + data.recordset[j].navn +'</td>' + '<td>' + data.recordset[j].timeStart +'</td>' + '<td>' + data.recordset[j].timeStop +'</td>'
+            pix = '';
+            pixDiff = '';
+            let startDate = data.recordset[j].timeStart;
+            let slutDate = data.recordset[j].timeStop;
+            let date = 00;
+            let date2 = 00;
+            date = startDate.substring(0,2);
+            date2 = slutDate.substring(0,2);
+            for(let t =0;t<date;t++){
+                pix = pix + '<td></td>'
+            }
+            let diff = date2 - date -1;
+            for(let s =0;s<diff;s++){
+                pixDiff = pixDiff + '<td></td>'
+            }
+            row=row + '<tr>' + '<td>' + data.recordset[j].id + '</td><td>' + data.recordset[j].navn +'</td>' + pix +'<td>' + data.recordset[j].timeStart + '</td>' + pixDiff + '<td>' + data.recordset[j].timeStop + '</td>'
         }
          str=str + row + '</table>';
         let bottom ='</div>'
